@@ -10,6 +10,8 @@ export type BottomTabParamList = {
 
 export type TabOneParamList = {
   TabOneScreen: undefined;
+  AddAppointment: undefined;
+  AppointmentDetail: undefined;
 };
 
 export type TabTwoParamList = {

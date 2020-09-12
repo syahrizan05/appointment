@@ -2,12 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import AddAppointmentScreen from '../screens/AddAppointmentScreen';
+import AppointmentDetailScreen from '../screens/AppointmentDetailScreen';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -52,7 +53,23 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{
+          headerTitle:  'Tab One Title',          
+        }}
+      />
+       <TabOneStack.Screen
+        name="AddAppointment"
+        component={AddAppointmentScreen}
+        options={{
+          headerTitle:  'Add Appointment',          
+        }}
+      />
+         <TabOneStack.Screen
+        name="AppointmentDetail"
+        component={AppointmentDetailScreen}
+        options={{
+          headerTitle:  'Appointment Detail',          
+        }}
       />
     </TabOneStack.Navigator>
   );
