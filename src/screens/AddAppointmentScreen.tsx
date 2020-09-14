@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 import styles from '../styles/styles'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-community/picker';
+import { taskDates } from '../db/data'
 
 import Constants from "expo-constants";
 
@@ -18,10 +19,6 @@ interface Task {
     customer?: string;
 }
 
-interface AppDayInterface {
-    title: string;
-    data: Array<Task>;
-}
 
 
 export default function AddAppointmentScreen({ navigation }: any) {
@@ -35,6 +32,8 @@ export default function AddAppointmentScreen({ navigation }: any) {
 
     const [pack, setPackage] = useState('');
     const [note, setNote] = useState('');
+
+    const withinRange = taskDates.find(tD => moment(date).isBetween(moment(tD.dateStart), moment(tD.dateEnd)))
 
 
     useLayoutEffect(() => {
@@ -60,7 +59,7 @@ export default function AddAppointmentScreen({ navigation }: any) {
     return (
         <View style={[styles.container, { paddingHorizontal: 10 }]}>
             <Modal visible={modalVisible} onRequestClose={() => setModalVisible(!modalVisible)}>
-                {screen === 'datetime' ? <DateAndTime date={date} setDate={setDate} endDate={endDate} setEndDate={setEndDate} openModal={() => openModal(screen)} />
+                {screen === 'datetime' ? <DateAndTime withinRange={withinRange} date={date} setDate={setDate} endDate={endDate} setEndDate={setEndDate} openModal={() => openModal(screen)} />
                     : screen === 'package' ? <Package pack={pack} setPackage={setPackage} setNote={setNote} openModal={() => openModal(screen)} />
                         : screen === 'customer' ? <CustomerInfo openModal={() => openModal(screen)} />
                             : <View />
@@ -70,36 +69,36 @@ export default function AddAppointmentScreen({ navigation }: any) {
 
 
             <View style={{ marginBottom: 10 }}>
-                 <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{moment(date).format('dddd LL')}</Text>
+                <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{moment(date).format('dddd LL')}</Text>
             </View>
             <TouchableOpacity onPress={() => openModal(`datetime`)} style={{ flexDirection: 'row', alignSelf: 'stretch', justifyContent: 'space-between', marginBottom: 10 }}>
                 <View>
                     <Text style={styles.textDefault}>{'Start'}</Text>
-                    <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{moment(date).format('hh:mm a')}</Text>
+                    <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{moment(date).format('hh:mm a')}</Text>
                 </View>
                 <View>
                     <Text style={styles.textDefault}>{'End'}</Text>
-                    <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{moment(endDate).format('hh:mm a')}</Text>
+                    <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{moment(endDate).format('hh:mm a')}</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openModal(`package`)} style={{ marginBottom: 10 }}>
                 <Text style={styles.textDefault}>{'Package'}</Text>
-                 <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{pack}</Text>
-                 <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{note}</Text>
+                <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{pack}</Text>
+                <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{note}</Text>
             </TouchableOpacity>
 
             <View style={{ marginBottom: 10 }}>
-                 <Text style={[styles.header]}>{'Customer Info'}</Text>
+                <Text style={[styles.header]}>{'Customer Info'}</Text>
             </View>
             <TouchableOpacity onPress={() => openModal(`customer`)} style={{ marginBottom: 10 }}>
 
                 <Text style={styles.textDefault}>{'Name'}</Text>
-                 <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{'Name'}</Text>
+                <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{'Name'}</Text>
             </TouchableOpacity>
             <View style={{ marginBottom: 10 }}>
 
                 <Text style={styles.textDefault}>{'Phone Number'}</Text>
-                 <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{'Phone Number'}</Text>
+                <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{'Phone Number'}</Text>
             </View>
         </View>
     );
@@ -107,10 +106,9 @@ export default function AddAppointmentScreen({ navigation }: any) {
 
 
 
-const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => {
+const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate, withinRange }: any) => {
     //////START DATE FUNCTIONS/////
 
-    const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [showDateDatePicker, setShowDateDatePicker] = useState(false);
     const [showStartDatePicker, setShowStartDatePicker] = useState(false);
@@ -118,15 +116,23 @@ const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => 
 
 
     const onChange = (_event: Event, selectedDate: Date) => {
+        setShowDateDatePicker(false)
+        setShowEndDatePicker(false)
+        setShowStartDatePicker(false)
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
+
     };
 
     const onChangeEndDate = (_event: Event, selectedDate: Date) => {
+        setShowDateDatePicker(false)
+        setShowEndDatePicker(false)
+        setShowStartDatePicker(false)
         const currentDate = selectedDate || endDate;
         setShow(Platform.OS === 'ios');
         setEndDate(currentDate);
+
     };
 
 
@@ -160,7 +166,7 @@ const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => 
             <View style={{ marginBottom: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'lightgrey' }}>
                 <Text style={styles.textDefault}>{'Date'}</Text>
                 <TouchableOpacity onPress={showDatepicker} style={{ alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between' }}>
-                     <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{moment(date).format('dddd LL')}</Text>
+                    <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{moment(date).format('dddd LL')}</Text>
                     <Text>Edit</Text>
                 </TouchableOpacity>
                 {showDateDatePicker && (
@@ -169,18 +175,19 @@ const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => 
                         value={date}
                         mode={'date'}
                         is24Hour={true}
-                        display="default"
+                        display="spinner"
                         onChange={onChange}
                         // textColor="red" 
                         minuteInterval={15}
                     />
                 )}
             </View>
+            {withinRange && <Text>Within Range {withinRange.task}</Text>}
 
             <View style={{ marginBottom: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'lightgrey' }}>
                 <Text style={styles.textDefault}>{'Start'}</Text>
                 <TouchableOpacity onPress={showTimeStart} style={{ alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between' }}>
-                     <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{moment(date).format('hh:mm a')}</Text>
+                    <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{moment(date).format('hh:mm a')}</Text>
                     <Text>Edit</Text>
                 </TouchableOpacity>
                 {showStartDatePicker && (
@@ -190,7 +197,7 @@ const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => 
                         mode={'time'}
                         minimumDate={moment().toDate()}
                         is24Hour={true}
-                        display="default"
+                        display="spinner"
                         onChange={onChange}
                         // textColor="red" 
                         minuteInterval={15}
@@ -201,7 +208,7 @@ const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => 
             <View style={{ marginBottom: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'lightgrey' }}>
                 <Text style={styles.textDefault}>{'End'}</Text>
                 <TouchableOpacity onPress={showTimeEnd} style={{ alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between' }}>
-                     <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{moment(endDate).format('hh:mm a')}</Text>
+                    <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{moment(endDate).format('hh:mm a')}</Text>
                     <Text>Edit</Text>
                 </TouchableOpacity>
                 {showEndDatePicker && (
@@ -210,7 +217,7 @@ const DateAndTime = ({ openModal, date, setDate, endDate, setEndDate }: any) => 
                         value={endDate}
                         mode={'time'}
                         is24Hour={true}
-                        display="default"
+                        display="spinner"
                         onChange={onChangeEndDate}
                         // textColor="red" 
                         minuteInterval={15}
@@ -234,23 +241,51 @@ const Package = ({ openModal, pack, setPackage, setNote }: PackageProps) => {
     //////START DATE FUNCTIONS/////
 
 
+    const packageType = [{ name: 'Full Body', selected: false }, { name: 'Hair Style', selected: false }]
+
+    const [packageList, setPackageList] = useState(packageType)
+
+    const selectPackage = (index: number) => {
+        const packages = packageList
+        packageList.map((p, index) => {
+            packages[index].selected = false
+        })
+        packages[index].selected = true
+        //console.log(`packages ialah ${JSON.stringify(packages)}`)
+        setPackageList([...packages])
+    }
 
     return (
         <View style={{ alignSelf: 'stretch', marginTop: Constants.statusBarHeight, padding: 10 }}>
 
             <View style={{ marginBottom: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'lightgrey' }}>
                 <Text style={styles.textDefault}>{'Package'}</Text>
-                 <Text style={[styles.header,{borderWidth:1,borderColor:'lightgrey',padding:5}]}>{pack}</Text>
-                <Picker
+                {/* <Text style={[styles.header, { borderWidth: 1, borderColor: 'lightgrey', padding: 5 }]}>{pack}</Text> */}
+                {/* <Picker
                     selectedValue={pack}
                     style={{ height: 88 }}
                     itemStyle={{ height: 88 }}
-                    onValueChange={(itemValue: string, itemIndex) =>
+                    onValueChange={(itemValue: string, itemIndex) => 
                         setPackage(itemValue)
                     }>
                     <Picker.Item label="Full Body Massage" value="Full Body Massage" />
                     <Picker.Item label="Hair Style" value="Hair Style" />
-                </Picker>
+                </Picker> */}
+
+                <FlatList
+                    data={packageList}
+                    renderItem={({ item, index }) => <TouchableOpacity onPress={() => selectPackage(index)} style={{ flexDirection: 'row', alignSelf: 'stretch', justifyContent: 'space-between', marginVertical: 5 }}>
+                        <View>
+                            <Ionicons name={'md-checkbox'} size={27} color={item.selected === true ? 'blue' : 'grey'} />
+                        </View>
+                        <View>
+                            <Text>{item.name}</Text>
+                        </View>
+
+                    </TouchableOpacity>}
+                    keyExtractor={(item, index) => index.toString()}
+                    extraData={packageList}
+                />
 
             </View>
 
