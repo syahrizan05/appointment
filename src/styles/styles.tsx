@@ -22,7 +22,8 @@ export const styles =
     container: {
       flex: 1,
       marginHorizontal: 0,
-      paddingHorizontal: 0
+      paddingHorizontal: 0,
+      //backgroundColor:'#D3EEFF'
     },
     item: {
       backgroundColor: "#f9c2ff",
@@ -32,13 +33,15 @@ export const styles =
     },
     header: {
       fontSize: 20,
-      backgroundColor: "#fff",
+      //backgroundColor: "#fff",
+      color:'black'
       //paddingVertical: 10
     },
     title: {
-      fontSize: 20
+      fontSize: 20,
+      color:'grey'
     },
-    textDefault: { fontSize: 17 },
+    textDefault: { fontSize: 17,color:'grey' },
    
     shadow: {
       ...elevationShadowStyle(5),

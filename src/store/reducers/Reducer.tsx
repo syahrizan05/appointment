@@ -1,90 +1,67 @@
+//import { combineReducers } from "redux";
 import { combineReducers } from "redux";
 
-
-const messageReducer = (state = [], action: any) => {
+const apiReducer = (state: any = [], action: any) => {
     switch (action.type) {
-        case 'POPULATE_MESSAGE':
+        case 'SET_API_AUTH':
             return { ...state, ...action.payload }
-        case 'RESET_DATA':
+        case 'API_RESET':
             return state = []
         default:
             return state
     }
 }
 
-const loginReducer = (state = [], action: any) => {
+const serviceListReducer = (state: any = [], action: any) => {
     switch (action.type) {
-        case 'SET_LOGIN':
+        case 'GET_SERVICES':
             return { ...state, ...action.payload }
-        case 'RESET_DATA':
+        case 'SERVICES_RESET':
             return state = []
         default:
             return state
     }
 }
 
-// const registrationReducer = (state = [], action) => {
-//     switch (action.type) {
-//         case 'GET_TOKEN':
-//             return { ...state, ...action.payload }
-//         case 'SET_REGISTER':
-//             return { ...state, ...action.payload }
-//         case 'SET_OTP':
-//             return { ...state, ...action.payload }
-//         case 'RESET_OTP':
-//             return { ...state, c1: undefined, c2: undefined, c3: undefined, c4: undefined, }
-//         case 'VERIFY_OTP':
-//             return { ...state, ...action.payload }
-//         case 'REGISTRATION_RESET':
-//             return state = []
-//         default:
-//             return state
-//     }
-// }
+const slotListReducer = (state: any = [], action: any) => {
+    switch (action.type) {
+        case 'GET_SLOTS':
+            return { ...state, ...action.payload }
+        case 'SLOTS_RESET':
+            return state = []
+        default:
+            return state
+    }
+}
 
-// const companyInformationReducer = (state = [], action) => {
-//     switch (action.type) {
-//         case 'SET_COMPANY_INFO':
-//             return { ...state, ...action.payload }
-//         case 'SET_CONTACT_PERSON':
-//             return { ...state, ...action.payload }
-//         case 'SET_DETAIL_CONNECT':
-//             return { ...state, ...action.payload }
-//         case 'SET_DECLARE_SIGN':
-//             return { ...state, ...action.payload }
-//         case 'COMPANY_INFO_RESET':
-//             return state = []
-//         default:
-//             return state
-//     }
-// }
+const taskListReducer = (state: any = [], action: any) => {
+    switch (action.type) {
+        case 'GET_TASKS':
+            return { ...state, ...action.payload }
+        case 'TASKS_RESET':
+            return state = []
+        default:
+            return state
+    }
+}
 
-// const dataReducer = (state = [], action) => {
-//     switch (action.type) {
-//         case 'GET_DATA':
-//             return { ...state, ...action.payload }
-//         case 'RESET_DATA':
-//             return state = []
-//         default:
-//             return state
-//     }
-// }
-
-// const orderReducer = (state = [], action) => {
-//     switch (action.type) {
-//         case 'SET_NEW_ORDER':
-//             return { ...state, ...action.payload }
-
-//         default:
-//             return state
-//     }
-// }
+const customerListReducer = (state: any = [], action: any) => {
+    switch (action.type) {
+        case 'GET_CUSTOMERS':
+            return { ...state, ...action.payload }
+        case 'CUSTOMERS_RESET':
+            return state = []
+        default:
+            return state
+    }
+}
 
 
 
-const appReducer = combineReducers({ messageReducer,loginReducer });
 
-const rootReducer = (state:any, action:any) => {
+const appReducer = combineReducers({ apiReducer,serviceListReducer,slotListReducer,taskListReducer,customerListReducer });
+
+const rootReducer = (state: any, action: any) => {
     switch (action.type) {
         case 'ROOT_LOG_OUT':
             return { state: undefined }
