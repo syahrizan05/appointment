@@ -55,6 +55,7 @@ export default function TabOneScreen({ navigation }: any) {
     appointmentDay[0].title = 'Today'
   })
 
+  //taskList&&console.log(`tasklist ialah ${JSON.stringify(taskList)}`)
 
   return (
     <View style={styles.container}>
