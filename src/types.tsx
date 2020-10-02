@@ -21,14 +21,14 @@ export type TabTwoParamList = {
 ////////////////////////////////////////////////////////////////////////////
 
 export interface SlotInterface {
-  name: string | null;
+  name: string | undefined;
   label?: string;
   description?: string;
   selected?: boolean;
 }
 
 export interface ServiceInterface {
-  name: string | null;
+  name: string | undefined;
   label?: string;
   description?: string;
   selected?: boolean;
@@ -43,12 +43,12 @@ export interface CustomerInterface {
 
 
 export interface Task {
-  dateStart?: string;
-  dateEnd?: string;
-  task: ServiceInterface | null;
-  customer?: CustomerInterface;
-  slot?: SlotInterface | null;
-  note?: string| null;
+  dateStart?: string| undefined;
+  dateEnd?: string| undefined;
+  task: ServiceInterface |string| undefined;
+  customer?: CustomerInterface|string| undefined;
+  slot?: SlotInterface | undefined;
+  note?: string| undefined;
 }
 
 export interface AppDayInterface {

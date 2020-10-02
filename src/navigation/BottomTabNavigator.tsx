@@ -54,7 +54,7 @@ function TabOneNavigator() {
         name="TabOneScreen"
         component={TabOneScreen}
         options={{
-          headerTitle:  'Tab One Title',          
+          headerTitle:  'Appointments',          
         }}
       />
        <TabOneStack.Screen

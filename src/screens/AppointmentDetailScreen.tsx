@@ -24,8 +24,6 @@ interface AppDayInterface {
 
 export default function AppointmentDetailScreen({ navigation }: any) {
 
-
-
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeftt: () => (

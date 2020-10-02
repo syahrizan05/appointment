@@ -47,7 +47,13 @@ export const styles =
       ...elevationShadowStyle(5),
       backgroundColor: 'white' // It'll look weird without a background color!
     },
-  
+  appointmentInfo:{
+    //marginBottom: 10,
+    backgroundColor: "#FEFAF2",
+    borderWidth: 1,
+    borderColor: "#EAEBFF",
+    padding: 10,
+  }
 
   });
 
